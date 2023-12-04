@@ -1,0 +1,76 @@
+﻿@page
+@model Multi_level.Pages.InvoiceModel
+@{
+}
+<!-- Header-->
+<header class="bg-img py-5" style="height:307px;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder color-blue-2">Cơ hội thịnh vượng cùng SPDAICAT</h1>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h1 class="align-content-center color-blue-2">QUẢN LÝ HOÁ ĐƠN</h1>
+        <div class="card">
+            <div class="card-header header-box">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label class="form-label">Từ ngày</label>
+                            <input type="date" id="startDateFilter" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label class="form-label">Đến ngày</label>
+                            <input type="date" id="endDateFilter" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <label class="form-label">Tìm kiếm</label>
+                            <button type="button" id="btnFilterStatus" class="btn w-md btn-info create form-control color-light" title="Tìm kiếm"><i class="bi bi-search" aria-hidden="true"></i> Lọc</button>
+                        </div>
+                    </div>
+                   @* <div class="col-md-2">
+                        <div class="mb-3">
+                            <label class="form-label">Tri ân</label>
+                            <button type="button" id="btnBenefit" class="btn w-md btn-success create form-control color-light" title="Tri ân"><i class="bi bi-bank" aria-hidden="true"></i> Danh sách</button>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="tblInvoice" class="table table-responsive-lg sortable">
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Modal upload invoice-->
+<div class="modal" tabindex="-1" id="mdbenefit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-2">
+                <h5 class="modal-title color-light">Danh sách tri ân</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Html.AntiForgeryToken()
+                <div class="container-fluid">
+                    <table id="tblbenefit" class="table table-responsive-lg sortable">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/invoice.js" asp-append-version="true"></script>
+
+                            }

@@ -1,0 +1,42 @@
+﻿@page
+@model Multi_level.Pages.PagePassModel
+@{
+    ViewData["Title"] = "Cơ hội kinh doanh cùng SPDAICAT";
+}
+<!-- Header-->
+<header class="bg-img py-5" style="height:307px;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder color-blue-2">Cơ hội thịnh vượng cùng SPDAICAT</h1>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container col-xs-12 col-md-6 justify-content-center">
+        <h5 class="align-content-center color-blue-2">@Model.message</h5>
+        <form enctype="multipart/form-data" method="post" id="frmSignUp" class="form justify-content-center">
+            <div class="card">
+                <div class="card-header bg-blue-custom color-light">ĐỔI MẬT KHẨU</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            <b>Mật khẩu cũ <i> * </i></b>
+                        </label>
+                        <input type="password" class="form-control" asp-for="@Model.oldPass" autocomplete="off" required />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <b>Mật khẩu mới <i> * </i></b>
+                        </label>
+                        <input type="password" class="form-control" asp-for="@Model.newPass" autocomplete="off" required />
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success">Đổi mật khẩu</button>
+                    <a href="/SignIn" class="btn btn-info">Đăng nhập</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>

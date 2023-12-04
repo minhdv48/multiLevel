@@ -1,0 +1,159 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Tham gia thành viên";
+}
+<!-- Header-->
+<header class="bg-img py-5" style="height:397px;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder color-blue-2">Cơ hội thịnh vượng cùng SPDAICAT</h1>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h1 class="align-content-center color-blue-2">ĐĂNG KÝ HỆ THỐNG</h1>
+        <p class="lead fw-normal mb-0" style="font-size:16px;"><i class="bi bi-hand-thumbs-up"></i> Đây là cơ hội tuyệt vời để bạn phát triển bản thân, tăng thu nhập và cải thiện cuộc sống. Chúng tôi tin rằng bạn sẽ thực hiện được điều đó . Khi làm bất cứ việc gì, hãy nuôi dưỡng ước mơ và ước mơ đó sẽ thành hiện thực !</p>
+        <h5 class="align-content-center color-blue-2">@Model.message</h5>
+        <form enctype="multipart/form-data" method="post" id="frmSignUp">
+            @Html.AntiForgeryToken()
+            <div class="row gx-4 gx-lg-5 row-cols-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Thông tin tài khoản</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Số điện thoại <i> * </i></b>
+                                    <input type="text" class="form-control" asp-for="@Model.model.Phone" required />
+                                    <small>Lưu ý: Số điện thoại sẽ dùng để đăng nhập hệ thống. Vui lòng cung cấp số điện thoại thường dùng.</small>
+                                </label>
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Mật khẩu <i> * </i></b>
+                                    <input type="password" class="form-control" asp-for="@Model.model.Password" required />
+                                    <small>Lưu ý: Mật khẩu dùng để đăng nhập hệ thống. Vui lòng không cung cấp cho người khác</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <hr />
+            <div cite="row gx-4 gx-lg-5 row-cols-1 margin-top-bottom">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Thông tin cá nhân</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Họ tên <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.FullName" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Email</b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Email" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Địa chỉ</b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Address" />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>CCCD <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Idcard" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Ngày cấp <i> * </i></b>
+                                </label>
+                                <input type="date" class="form-control" asp-for="@Model.model.CardVerifyDate" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Nơi cấp <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.CardVerifyBy" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Mã giới thiệu <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.CodeRefer" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Mã Amway <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.AmwayCode" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Ngân hàng<i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.BankName" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Chi nhánh <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Branch" required />
+                            </div>
+                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <label>
+                                    <b>Số Tài khoản<i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.BankAccount" required />
+                            </div>
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <label>
+                                    <b>Chủ tài khoản <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.AccountName" required />
+                            </div>
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <label>
+                                    <b>Mã bảo mật <i> * </i></b>
+                                </label>
+                                <img id="img-captcha" src="/captcha.png" style="margin-right:20px" /> <a id="resetcaptcha"><i class="bi bi-arrow-repeat"></i></a>
+                                <input type="text" class="form-control" asp-for="@Model.model.CaptchaCode" required autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent margin-top-bottom" style="padding:15px !important;">
+                <div class="col-mb-5">
+                    <button type="submit" class="btn btn-success" asp-page-handler="Register">Đăng ký</button>
+                    <a href="/" class="btn btn-info">Làm lại</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

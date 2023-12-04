@@ -1,0 +1,363 @@
+﻿@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "Thông tin thành viên";
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+@using Multi_LevelModels.Models
+@using System.Globalization;
+@{
+    void ParentCate(List<Profile> data)
+    {
+        var lstParent = data.Where(x => x.ParentId == Model.ParentId).ToList();
+        foreach (var parent in lstParent)
+        {
+            var lstChild = data.Where(x => x.ParentId == parent.Id).ToList();
+            @if (lstChild.Count > 0)
+            {
+                <li>
+                    <a href="#">@parent.FullName - @parent.Phone - <small>@parent.ReferBy</small> - <i title="Tổng số thành viên" class="color-danger bi bi-person-hearts"></i> @lstChild.Count </a> <a data-id="@parent.Id" class="view" title="Xem thông tin"><i class="bi bi-eye color-success"></i></a>
+                    <ul>
+                        @{
+                            ChildCate(data, lstChild, Model.ParentId);
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="javascript:void(0)">@parent.FullName - @parent.Phone- <small>@parent.ReferBy</small>  - <span class="color-danger" title="Tổng số thành viên"><i class="bi bi-person-hearts"></i> @lstChild.Count</span></a> <a data-id="@parent.Id" class="view" title="Xem thông tin"><i class="bi bi-eye color-success"></i></a>
+
+                </li>
+            }
+        }
+    }
+    void ChildCate(List<Profile> categories, List<Profile> lstChild, int referId)
+    {
+        foreach (var item in lstChild)
+        {
+            var lstSub = categories.Where(x => x.ParentId == item.Id).ToList();
+            bool checkVerify = (!string.IsNullOrEmpty(item.PathInvoice) && item.ParentId > 0) ? true : false;
+            <li>
+
+                <a href="javascript:void(0)">@item.FullName - @item.Phone- <small>@item.ReferBy</small> - <span class="color-danger" title="Tổng số thành viên"><i class="bi bi-person-hearts"></i> @lstSub.Count</span></a> <a data-id="@item.Id" class="view" title="Xem thông tin"><i class="bi bi-eye color-success"></i></a>
+
+                @if (lstSub.Count > 0)
+                {
+                    <ul>
+                        @{
+                            ChildCate(categories, lstSub, referId);
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    }
+}
+<!-- Header-->
+<header class="bg-img py-5" style="height:307px;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder color-blue-2">Cơ hội thịnh vượng cùng SPDAICAT</h1>
+        </div>
+    </div>
+</header>
+<hr style="color:#034580; border-top:5px solid" />
+<div class="container px-4 px-lg-5 mt-5">
+    <div class="row">
+        <div class="col-xs-12 col-md-5">
+            <h3 class="align-content-center color-blue-2">THÔNG TIN CÁ NHÂN</h3>
+            <form enctype="multipart/form-data" method="post" id="frmProfile">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-danger">@Model.message</p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="FullName">Họ tên</label>
+                                <input type="text" class="form-control" asp-for="@Model.model.FullName" />
+                                <input type="hidden" asp-for="@Model.model.Id" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="Phone">Điện thoại</label>
+                                <label for="Phone" class="form-control">@Model.model.Phone</label>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="exampleInputEmail1">Email</label>
+                                <input type="email" class="form-control" asp-for="@Model.model.Email" />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="Address">Địa chỉ</label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Address" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="Address">CCCD</label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Idcard" />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="Address">Nơi cấp</label>
+                                <input type="text" class="form-control" asp-for="@Model.model.CardVerifyBy" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="Address">Ngày cấp CCCD</label>
+                                <input type="date" class="form-control" asp-for="@Model.model.CardVerifyDate" />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="Address">Mã Amway</label>
+                                <input type="text" class="form-control" asp-for="@Model.model.AmwayCode" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Ngân hàng<i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.BankName" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Chi nhánh <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.Branch" required />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Số Tài khoản<i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.BankAccount" required />
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label>
+                                    <b>Chủ tài khoản <i> * </i></b>
+                                </label>
+                                <input type="text" class="form-control" asp-for="@Model.model.AccountName" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="exampleInputPassword1">Mã giới thiệu: <span class="badge badge-success">@Model.model.CodeRefer</span> - <span class="badge badge-primary">Tầng: @Model.model.Levels</span></label><br />
+                                <small>Lưu ý: Hãy lưu lại mã này để gửi cho khách hàng của bạn.</small>
+                            </div>
+                        </div>
+                        @if (Model.referBy != null)
+                        {
+                            <div class="form-group">
+                                <label for="Address">Người giới thiệu</label>
+                                <span class="badge badge-info">
+                                    @Model.referBy.FullName
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Address">Mã người giới thiệu</label>
+                                <span class="badge badge-primary">@Model.referBy.CodeRefer</span>
+                            </div>
+                        }
+                    </div>
+                    @if (Model.IsUpdate)
+                    {
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success" asp-page-handler="UpdateProfile">Cập nhật thông tin</button>
+                            <button type="button" class="btn btn-default" id="btnInvoice">Cập nhật hoá đơn</button>
+                        </div>
+                    }
+                </div>
+            </form>
+
+        </div>
+        <div class="col-xs-12 col-md-7">
+            <h3 class="align-content-center color-blue-2">CÂY THÀNH VIÊN</h3>
+            @if (!Model.IsUpdate)
+            {
+               
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="inputPassword6" class="col-form-label">Tổng số người: <span class="badge badge-primary">@Model.TotalMember</span></label>
+                    </div>
+                    <div class="col-auto">
+                        <label for="inputPassword6" class="col-form-label">Tổng số tiền được hưởng: <span class="badge badge-success"> @String.Format(cul,"{0:C}",Model.TotalProfit + Model.TotalBonus)</span></label>
+                    </div>
+                    <div class="col-auto">
+                        <a id="benefit" data-id="@Model.ParentId"> <i class="color-danger bi bi-credit-card"></i> tri ân tháng: @Model.Month.ToString("MM/yyyy")</a>
+                        <input type="hidden" id="hdfMonth" value="@Model.Month"/>
+                        <input type="hidden" id="hdfBenefit" value="@Model.TotalProfit" />
+                        <input type="hidden" id="hdfBonus" value="@Model.TotalBonus" />
+                    </div>
+                </div>
+            }
+           
+            <div class="card">
+                <div class="card-body">
+                    <ul id="tree1">
+                        <li>
+                            <a href="#">@Model.model.FullName</a>
+                            <ul>
+                                @{
+                                    ParentCate(Model.profiles);
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal-->
+<div class="modal" tabindex="-1" id="mdInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-2">
+                <h5 class="modal-title color-light">Thông tin thành viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tổng số thành viên trong nhóm:</label>
+                        <input type="text" class="form-control" id="subCount" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Mã giới thiệu:</label>
+                        <input type="text" class="form-control" id="Rfcode" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Mã amway:</label>
+                        <input type="text" class="form-control" id="AWcode" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Họ tên:</label>
+                        <input type="text" class="form-control" id="fullname" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Điện thoại</label><br />
+                        <input type="text" class="form-control" id="phonenumber" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal-->
+<div class="modal" tabindex="-1" id="mdConfirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-2">
+                <h5 class="modal-title color-light">Xác nhận hóa đơn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form>
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Mã giới thiệu:</label>
+                            <input type="text" class="form-control" id="coderefer" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Người xác thực:</label>
+                            <input type="text" class="form-control" id="full-name" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Hóa đơn:</label><br />
+                            <img id="invoice" style="max-width:442px; max-height:292px;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal upload invoice-->
+<div class="modal" tabindex="-1" id="mdInvoice">
+    <form method="post" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-2">
+                    <h5 class="modal-title color-light">Cập nhật hóa đơn mua hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">@Model.messageInvoice</p>
+                    <div class="container-fluid">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Mã giới thiệu: <span class="badge badge-success">@Model.model.CodeRefer</span> - Tầng: @Model.model.Levels</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Số Hóa đơn:</label><br />
+                            <input type="text" asp-for="modelInvoice.InvoiceCode" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ngày Hóa đơn:</label><br />
+                            <input type="date" asp-for="modelInvoice.DateInvoice" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Hóa đơn:</label><br />
+                            <input type="file" asp-for="modelInvoice.Invoices" class="form-control" multiple />
+                        </div>
+                        <input type="hidden" asp-for="PId" value="@Model.PId" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" asp-page-handler="UpdateInvoice">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--Modal payment-->
+<div class="modal" tabindex="-1" id="mdPayment">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-2">
+                    <h5 class="modal-title color-light">Tri ân</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="hdfprofileId" asp-for="@Model.PaymentModel.ProfileId" />
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Người tri ân:</label>
+                            <input type="text" class="form-control" id="full-name" value="@Model.model.FullName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Tổng số tiền được tri ân:</label>
+                            <input type="text" class="form-control" id="txtbenefit" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Hóa đơn:</label><br />
+                            <input type="file" id="upInvoice" asp-for="@Model.PaymentModel.img" class="form-control" accept="image/png, image/jpeg, image/jpg" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave" asp-page-handler="UpdatePayment" asp-page="Report">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
